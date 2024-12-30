@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple WebSocket</title>
+  </head>
+  <body>
+    <input type="text" id="messageInput" />
+    <button onclick="sendMessage()">Send</button>
+    <div id="messages"></div>
+
+    <script>
+      // Connect to echo server
+      const ws = new WebSocket("wss://echo.websocket.org");
+
+      // Handle connection open
+      ws.onopen = function () {
+        console.log("Connected");
+      };
+
+      // Handle receiving messages
+      ws.onmessage = function (e) {
+        const messagesDiv = document.getElementById("messages");
+        messagesDiv.innerHTML += `<p>Received: ${e.data}</p>`;
+      };
+
+      // Send message function
+      function sendMessage() {
+        const input = document.getElementById("messageInput");
+        const message = input.value;
+        ws.send(message);
+        input.value = "";
+      }
+    </script>
+  </body>
+</html>
